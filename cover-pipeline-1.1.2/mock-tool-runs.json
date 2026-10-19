@@ -1,0 +1,286 @@
+[
+  {
+    "id": "D1",
+    "desc": "同名 .wav+.mp3 → 预期 basename collide 报错",
+    "result": {
+      "ok": false,
+      "phase": "precondition",
+      "label": "S1/S2",
+      "error": "Input basenames collide; use unique song names",
+      "cmdline": "",
+      "artifacts": [],
+      "artifactsOk": false
+    }
+  },
+  {
+    "id": "D2",
+    "desc": "outDir 已有上次产物 → 预期 Output already exists 拒跑",
+    "result": {
+      "ok": false,
+      "phase": "precondition",
+      "label": "S1 人声/伴奏分离",
+      "error": "Output already exists; choose a fresh run path: C:\\Users\\delinger\\AppData\\Local\\Temp\\cover-probe-d-DDSOJZ\\d2\\out\\new\\vocals.wav",
+      "cmdline": "",
+      "artifacts": [],
+      "artifactsOk": false
+    }
+  },
+  {
+    "id": "D3",
+    "desc": "无材料 cover_convert mode=pilot → 预期 precondition 失败（不静默）",
+    "result": {
+      "ok": false,
+      "phase": "precondition",
+      "label": "S4 baseline pilot k=+0",
+      "error": "Effective model and sibling config.yaml must exist",
+      "cmdline": "",
+      "artifacts": [],
+      "artifactsOk": false
+    }
+  },
+  {
+    "id": "D4",
+    "desc": "cover_status 指不存在目录 → 预期 exists:false 不崩",
+    "result": {
+      "dir": "C:\\Users\\delinger\\AppData\\Local\\Temp\\cover-probe-d-DDSOJZ\\no-such-dir",
+      "exists": false,
+      "entries": [],
+      "rendered": "【工程状态】C:\\Users\\delinger\\AppData\\Local\\Temp\\cover-probe-d-DDSOJZ\\no-such-dir —— 不存在"
+    }
+  },
+  {
+    "id": "D5",
+    "desc": "输入文件名 \"...wav\" dryRun → 预期 expects 逃出 outDir（审计 F2）",
+    "result": {
+      "ok": true,
+      "phase": "dry-run",
+      "label": "S1 人声/伴奏分离",
+      "cmdline": " inference.py --model_type mel_band_roformer --config_path configs/config_vocals_mel_band_roformer_kim.yaml --start_check_point pretrain/MelBandRoformer_kim.ckpt --input_folder C:\\Users\\delinger\\AppData\\Local\\Temp\\cover-probe-d-DDSOJZ\\d5\\in --store_dir C:\\Users\\delinger\\AppData\\Local\\Temp\\cover-probe-d-DDSOJZ\\d5\\out --extract_instrumental --disable_detailed_pbar",
+      "cwd": "",
+      "expects": [
+        "C:\\Users\\delinger\\AppData\\Local\\Temp\\cover-probe-d-DDSOJZ\\d5\\vocals.wav",
+        "C:\\Users\\delinger\\AppData\\Local\\Temp\\cover-probe-d-DDSOJZ\\d5\\instrumental.wav"
+      ],
+      "artifacts": [],
+      "artifactsOk": false,
+      "karaokeResult": {
+        "ok": true,
+        "phase": "dry-run",
+        "label": "S2 主唱/和声分离",
+        "cmdline": " inference.py --model_type bs_roformer --config_path configs/config_karaoke_frazer_becruily.yaml --start_check_point pretrain/bs_roformer_karaoke_frazer_becruily.ckpt --input_folder C:\\Users\\delinger\\AppData\\Local\\Temp\\cover-probe-d-DDSOJZ\\d5\\out\\.kara-input-5f6ca3bb-5573-425d-9a9a-c9b18a955709 --store_dir C:\\Users\\delinger\\AppData\\Local\\Temp\\cover-probe-d-DDSOJZ\\d5\\out\\kara --extract_instrumental --disable_detailed_pbar",
+        "cwd": "",
+        "expects": [
+          "C:\\Users\\delinger\\AppData\\Local\\Temp\\cover-probe-d-DDSOJZ\\d5\\out\\Vocals.wav",
+          "C:\\Users\\delinger\\AppData\\Local\\Temp\\cover-probe-d-DDSOJZ\\d5\\out\\instrumental.wav"
+        ],
+        "artifacts": [],
+        "artifactsOk": false
+      }
+    }
+  },
+  {
+    "id": "E1",
+    "desc": "裸机 doctor 全清单",
+    "ok": false,
+    "errorCount": 14,
+    "warningCount": 1,
+    "checks": [
+      {
+        "name": "Node 运行时",
+        "level": "error",
+        "ok": true,
+        "detail": "v24.15.0  C:\\Program Files\\nodejs\\node.exe",
+        "fix": ""
+      },
+      {
+        "name": "混音工程 mixDir",
+        "level": "error",
+        "ok": true,
+        "detail": "D:/AI-Song/cover_runs",
+        "fix": ""
+      },
+      {
+        "name": "MSST 目录 msstDir",
+        "level": "error",
+        "ok": false,
+        "detail": "不存在: ",
+        "fix": "把材料解压到 <songRoot>/01_*、02_*；或运行 cover_setup 看缺失清单"
+      },
+      {
+        "name": "DDSP 目录 ddspDir",
+        "level": "error",
+        "ok": false,
+        "detail": "不存在: ",
+        "fix": "把材料解压到 <songRoot>/01_*、02_*；或运行 cover_setup 看缺失清单"
+      },
+      {
+        "name": "Python 环境 · MSST",
+        "level": "error",
+        "ok": false,
+        "detail": "解释器不存在: ",
+        "fix": "见 README「环境配置」——两套 env 是硬依赖，且不能用同一个"
+      },
+      {
+        "name": "Python 环境 · DDSP",
+        "level": "error",
+        "ok": false,
+        "detail": "解释器不存在: ",
+        "fix": "见 README「环境配置」——两套 env 是硬依赖，且不能用同一个"
+      },
+      {
+        "name": "HiFiGAN 声码器",
+        "level": "error",
+        "ok": false,
+        "detail": "不存在: pretrain/pc_nsf_hifigan_44.1k_hop512_128bin_2025.02/model.ckpt",
+        "fix": "DDSP 的 pretrain 缺失；下载入口见 materials/README.md"
+      },
+      {
+        "name": "ContentVec 编码器",
+        "level": "error",
+        "ok": false,
+        "detail": "不存在: pretrain/contentvec/checkpoint_best_legacy_500.pt",
+        "fix": "DDSP 的 pretrain 缺失；下载入口见 materials/README.md"
+      },
+      {
+        "name": "目标音色模型 voiceModel",
+        "level": "error",
+        "ok": false,
+        "detail": "未配置路径",
+        "fix": "下载「8 人音色模型」包，解压到 <songRoot>/03_音色模型_*；入口见 materials/README.md"
+      },
+      {
+        "name": "实际转换模型 config.yaml",
+        "level": "error",
+        "ok": false,
+        "detail": "不存在: ./config.yaml",
+        "fix": ""
+      },
+      {
+        "name": "MSST 人声权重",
+        "level": "error",
+        "ok": false,
+        "detail": "不存在: pretrain/MelBandRoformer_kim.ckpt",
+        "fix": "MSST 的 pretrain 缺失；下载入口见 materials/README.md"
+      },
+      {
+        "name": "MSST 卡啦权重",
+        "level": "error",
+        "ok": false,
+        "detail": "不存在: pretrain/bs_roformer_karaoke_frazer_becruily.ckpt",
+        "fix": "默认保留原和声需要二级分离；缺失时禁止静默降级（见 materials/README.md）"
+      },
+      {
+        "name": "kim config",
+        "level": "error",
+        "ok": false,
+        "detail": "不存在: configs/config_vocals_mel_band_roformer_kim.yaml",
+        "fix": ""
+      },
+      {
+        "name": "karaoke config",
+        "level": "error",
+        "ok": false,
+        "detail": "不存在: configs/config_karaoke_frazer_becruily.yaml",
+        "fix": ""
+      },
+      {
+        "name": "baseline batch renderer",
+        "level": "error",
+        "ok": false,
+        "detail": "不存在: batch_infer.py",
+        "fix": ""
+      },
+      {
+        "name": "MSST inference",
+        "level": "error",
+        "ok": false,
+        "detail": "不存在: inference.py",
+        "fix": ""
+      },
+      {
+        "name": "mix implementation",
+        "level": "error",
+        "ok": true,
+        "detail": "0.0 MB  D:/workspace/dsh-bench/plugins/dsh-cover-pipeline/runtime/mix_master.py",
+        "fix": ""
+      },
+      {
+        "name": "verify implementation",
+        "level": "error",
+        "ok": true,
+        "detail": "0.0 MB  D:/workspace/dsh-bench/plugins/dsh-cover-pipeline/runtime/verify_mix.py",
+        "fix": ""
+      },
+      {
+        "name": "plugin adapter convert.py",
+        "level": "error",
+        "ok": true,
+        "detail": "0.0 MB  D:/workspace/dsh-bench/plugins/dsh-cover-pipeline/runtime/convert.py",
+        "fix": ""
+      },
+      {
+        "name": "plugin adapter long_audio.py",
+        "level": "error",
+        "ok": true,
+        "detail": "0.0 MB  D:/workspace/dsh-bench/plugins/dsh-cover-pipeline/runtime/long_audio.py",
+        "fix": ""
+      },
+      {
+        "name": "plugin adapter guided_core.py",
+        "level": "error",
+        "ok": true,
+        "detail": "0.0 MB  D:/workspace/dsh-bench/plugins/dsh-cover-pipeline/runtime/guided_core.py",
+        "fix": ""
+      },
+      {
+        "name": "plugin adapter mix.py",
+        "level": "error",
+        "ok": true,
+        "detail": "0.0 MB  D:/workspace/dsh-bench/plugins/dsh-cover-pipeline/runtime/mix.py",
+        "fix": ""
+      },
+      {
+        "name": "plugin adapter validate_model.py",
+        "level": "error",
+        "ok": true,
+        "detail": "0.0 MB  D:/workspace/dsh-bench/plugins/dsh-cover-pipeline/runtime/validate_model.py",
+        "fix": ""
+      },
+      {
+        "name": "ffmpeg",
+        "level": "warn",
+        "ok": false,
+        "detail": "未配置路径",
+        "fix": "★ 本机系统 ffmpeg 是阉割版；这里指的是 MSST env 里那份完整 ffmpeg"
+      },
+      {
+        "name": "随包核心脚本（8 个）",
+        "level": "error",
+        "ok": true,
+        "detail": "全部就位（runtime/）",
+        "fix": "重新 clone 仓库；核心脚本已随包，不需要另找外部工程目录"
+      },
+      {
+        "name": "音色库（0 个）",
+        "level": "info",
+        "ok": false,
+        "detail": "未发现：<songRoot>/03_音色模型_*",
+        "fix": "下载「8 人音色模型」包，解压到 <songRoot>/03_音色模型_MYGO-AveMujica"
+      },
+      {
+        "name": "磁盘可用空间",
+        "level": "warn",
+        "ok": true,
+        "detail": "162.6 GB 可用（D:/AI-Song/cover_runs）",
+        "fix": ""
+      },
+      {
+        "name": "网络代理（取源用）",
+        "level": "info",
+        "ok": true,
+        "detail": "未设置（仅影响从 B站/网易云取素材，不影响出成品）",
+        "fix": ""
+      }
+    ]
+  }
+]
