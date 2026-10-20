@@ -1,0 +1,50 @@
+{
+  "port": 15595,
+  "rows": [
+    {
+      "label": "A0 页面基线（不带 token）",
+      "status": 401,
+      "body": "dsh web authentication required; reopen the URL printed by dsh web. "
+    },
+    {
+      "label": "A1 页面带 token",
+      "status": 303,
+      "body": ""
+    },
+    {
+      "label": "B1 get 正常头（无 token/无 Origin）",
+      "status": 401,
+      "body": "unauthorized"
+    },
+    {
+      "label": "B2 get + Origin: evil",
+      "status": 401,
+      "body": "unauthorized"
+    },
+    {
+      "label": "B3 get + Sec-Fetch-Site: cross-site",
+      "status": 401,
+      "body": "unauthorized"
+    },
+    {
+      "label": "B4 get + Host: evil（rebinding 形）",
+      "status": 403,
+      "body": "forbidden"
+    },
+    {
+      "label": "C1 写面探针 set mode=bogus（到达 handler 则 400，零副作用）",
+      "status": 401,
+      "body": "unauthorized"
+    },
+    {
+      "label": "C2 写面探针 set mode=bogus（无 Origin，curl 形）",
+      "status": 401,
+      "body": "unauthorized"
+    },
+    {
+      "label": "D1 token 附带在 cookie? 试 Cookie: token=...",
+      "status": 401,
+      "body": "unauthorized"
+    }
+  ]
+}
