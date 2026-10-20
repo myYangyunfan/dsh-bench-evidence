@@ -1,0 +1,50 @@
+{
+  "port": 15596,
+  "rows": [
+    {
+      "label": "A0 页面基线（不带 token）",
+      "status": 401,
+      "body": "dsh web authentication required; reopen the URL printed by dsh web. "
+    },
+    {
+      "label": "A1 页面带 token",
+      "status": 303,
+      "body": ""
+    },
+    {
+      "label": "B1 snapshot 正常头（无 token/无 Origin）",
+      "status": 401,
+      "body": "unauthorized"
+    },
+    {
+      "label": "B2 snapshot + Origin: evil",
+      "status": 401,
+      "body": "unauthorized"
+    },
+    {
+      "label": "B3 snapshot + Sec-Fetch-Site: cross-site",
+      "status": 401,
+      "body": "unauthorized"
+    },
+    {
+      "label": "B4 snapshot + Host: evil（rebinding 形）",
+      "status": 403,
+      "body": "forbidden"
+    },
+    {
+      "label": "C1 unknown endpoint 探针（到达 handler 则 ok:false）",
+      "status": 401,
+      "body": "unauthorized"
+    },
+    {
+      "label": "C2 unknown endpoint（无 Origin，curl 形）",
+      "status": 401,
+      "body": "unauthorized"
+    },
+    {
+      "label": "D1 logo 静态路由（GET）",
+      "status": 401,
+      "body": "unauthorized"
+    }
+  ]
+}
